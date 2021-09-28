@@ -23,6 +23,7 @@ public class Reservation {
         String out = "\n==================\n";
         out += "Customer: " + customer.getName() + "\n";
         out += "Email: " + customer.getEmail() + "\n";
+        out += "Room: " + room.getRoomNumber() + "\n";
         out += "Check in date: " + checkInDate.toString() + "\n";
         out += "Check out date:" + checkOutDate.toString() + "\n";
         out += "==================\n";
@@ -46,4 +47,8 @@ public class Reservation {
                 && reservation.checkOutDate.equals(this.checkOutDate);
     }
 
+    @Override
+    public int hashCode() {
+        return customer.hashCode() + room.hashCode();
+    }
 }

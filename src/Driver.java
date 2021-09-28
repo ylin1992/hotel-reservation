@@ -1,5 +1,6 @@
 import model.*;
 import service.CustomerService;
+import service.ReservationService;
 
 import java.util.*;
 
@@ -98,10 +99,58 @@ public class Driver {
         System.out.println(reservation.equals(reservation2));
     }
 
+    public static void testReservationService() {
+        ReservationService reservationService = new ReservationService();
+        reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
+        reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
+        reservationService.displayAllRooms();
+        //reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
+        System.out.println(reservationService.getARoom("101"));
+        System.out.println(reservationService.getARoom("103"));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2021, 10, 14);
+        Date checkInDate = calendar.getTime();
+        calendar.set(2021, 10, 18);
+        Date checkOutDate = calendar.getTime();
+        Customer customer = new Customer("Leo@gmail.com", "Leo", "Wang");
+        IRoom room = new FreeRoom("101", RoomType.SINGLE);
+
+        Reservation reservation1 = reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+        System.out.println(reservation1);
+
+        calendar.set(2021, 10, 11);
+        checkInDate = calendar.getTime();
+        calendar.set(2021, 10, 12);
+        checkOutDate = calendar.getTime();
+        Customer customer2 = new Customer("Angela@gmail.com", "Angela", "Wang");
+        Reservation reservation2 = reservationService.reserveARoom(customer2, room, checkInDate, checkOutDate);
+        System.out.println(reservation2);
+
+
+        System.out.println("\n List reservations of a customer");
+        for (Reservation res : reservationService.getCustomerReservation(customer)) {
+            System.out.println(res);
+        }
+
+
+        calendar.set(2021, 10, 19);
+        checkInDate = calendar.getTime();
+        calendar.set(2021, 10, 20);
+        checkOutDate = calendar.getTime();
+        Customer customer3 = new Customer("Angela@gmail.com", "Angela", "Wang");
+        Reservation reservation3 = reservationService.reserveARoom(customer3, room, checkInDate, checkOutDate);
+
+        System.out.println("Print all reservations");
+        reservationService.printAllReservation();
+    }
+
     public static void main(String[] args) {
         //Driver.testModelCustomer();
         //Driver.testCustomerService();
         //testRoom();
-        testModelReservation();
+        //testModelReservation();
+        //testRoom();
+        testReservationService();
     }
 }

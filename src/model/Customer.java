@@ -62,5 +62,8 @@ public class Customer {
                 customer.getEmail().toLowerCase().equals(this.getEmail().toLowerCase());
     }
 
-
+    @Override
+    public int hashCode() {
+        return email.hashCode();
+    }
 }

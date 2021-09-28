@@ -49,10 +49,15 @@ public class Room implements IRoom {
         if (o == this) {
             return true;
         }
-        if (!o.getClass().getName().equals(this.getClass().getName())) {
+        if (!o.getClass().equals(this.getClass())) {
             return false;
         }
         IRoom room = (IRoom) o;
         return room.getRoomNumber().equals(this.roomNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return roomNumber.hashCode();
     }
 }
