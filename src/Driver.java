@@ -145,12 +145,42 @@ public class Driver {
         reservationService.printAllReservation();
     }
 
+    public static void testReservation() {
+        Date[] dates1 = DriverHelper.getDates(new int[]{2021, 10, 8}, new int[]{2021, 10, 9});
+        Date[] dates2 = DriverHelper.getDates(new int[]{2021, 10, 10}, new int[]{2021, 10, 15});
+        Date[] dates3 = DriverHelper.getDates(new int[]{2021, 10, 17}, new int[]{2021, 10, 19});
+        Date[] dates4 = DriverHelper.getDates(new int[]{2021, 10, 22}, new int[]{2021, 10, 25});
+        Date[] dates5 = DriverHelper.getDates(new int[]{2021, 10, 13}, new int[]{2021, 10, 16});
+        ReservationService reservationService = DriverHelper.initializeReservationService();
+        List<Customer> customerList = DriverHelper.initializeCustomerList();
+
+        // find rooms
+        List<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
+        /*for (IRoom room : reservationService.findRooms(dates1[0], dates1[1])) {
+            System.out.println(room);
+        }*/
+
+        // get a room
+        //System.out.println(reservationService.getARoom("10"));
+
+        // reserve room
+        Reservation reservation = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates1[0], dates1[1]);
+        Reservation reservation2 = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates2[0], dates2[1]);
+        Reservation reservation3 = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates3[0], dates3[1]);
+        Reservation reservation4 = reservationService.reserveARoom(customerList.get(1), rooms.get(1), dates1[0], dates1[1]);
+        //Reservation reservation5 = reservationService.reserveARoom(customerList.get(0), rooms.get(1), dates1[0], dates1[1]);
+        reservationService.printAllReservation();
+    }
+
+
     public static void main(String[] args) {
         //Driver.testModelCustomer();
         //Driver.testCustomerService();
         //testRoom();
         //testModelReservation();
         //testRoom();
-        testReservationService();
+        //testReservationService();
+        testReservation();
+
     }
 }

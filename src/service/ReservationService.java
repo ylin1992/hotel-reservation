@@ -33,7 +33,7 @@ public class ReservationService {
                 return room;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No room matched");
     }
 
     private boolean isValidRequest(IRoom room, Date checkInDate, Date checkOutDate) {
@@ -68,16 +68,21 @@ public class ReservationService {
         }
     }
 
-    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
+    public List<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         if (checkInDate.compareTo(checkOutDate) >= 0) {
             throw new IllegalArgumentException("Invalid dates");
         }
         List<IRoom> availbleRooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
-            for (Date[] dates : roomTable.get(room)) {
-                if (isValidRequest(room, dates[0], dates[1])) {
-                    availbleRooms.add(room);
-                    break;
+            List<Date[]> list = roomTable.get(room);
+            if (list.size() == 0) {
+                availbleRooms.add(room);
+            } else {
+                for (Date[] dates : roomTable.get(room)) {
+                    if (isValidRequest(room, dates[0], dates[1])) {
+                        availbleRooms.add(room);
+                        break;
+                    }
                 }
             }
         }
