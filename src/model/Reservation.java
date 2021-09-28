@@ -7,7 +7,7 @@ public class Reservation {
     Date checkInDate;
     Date checkOutDate;
     IRoom room;
-
+    
     @Override
     public String toString() {
         String out = "\n==================\n";

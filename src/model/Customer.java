@@ -10,9 +10,10 @@ public class Customer {
     String lastName;
     String email;
 
-    public Customer(String firstName, String lastName, String email) {
+    public Customer(String email, String firstName, String lastName) {
         if (!pattern.matcher(email).matches()) {
-            throw new IllegalArgumentException("Invalid email");
+            String warning = "Invalid Email, info provided: " + firstName + " " + lastName + ", email: " + email;
+            throw new IllegalArgumentException(warning);
         } else {
             this.email = email;
             this.firstName = firstName;
