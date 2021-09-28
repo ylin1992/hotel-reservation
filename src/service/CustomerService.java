@@ -17,6 +17,7 @@ public class CustomerService {
 
 
     public void addCustomer(String email, String firstName, String lastName) {
+        email = email.toLowerCase();
         if (!customers.containsKey(email)) {
             Customer newCustomer = new Customer(email, firstName, lastName);
             customers.put(email, newCustomer);
@@ -30,7 +31,7 @@ public class CustomerService {
         Using a HashMap to implement constant time searching
      */
     public Customer getCustomer(String customerEmail) {
-        if (customers.containsKey(customerEmail)) {
+        if (customers.containsKey(customerEmail.toLowerCase())) {
             return customers.get(customerEmail);
         } else {
             throw new IllegalArgumentException("No email matches: " + customerEmail);

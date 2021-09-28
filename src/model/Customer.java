@@ -3,12 +3,12 @@ package model;
 import java.util.regex.Pattern;
 
 public class Customer {
-    String emailRegex = "^(.+)@(.+).(.+)$";
-    Pattern pattern = Pattern.compile(emailRegex);
+    private final String emailRegex = "^(.+)@(.+).(.+)$";
+    private final Pattern pattern = Pattern.compile(emailRegex);
 
-    String firstName;
-    String lastName;
-    String email;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
 
     public Customer(String email, String firstName, String lastName) {
         if (!pattern.matcher(email).matches()) {
@@ -29,6 +29,14 @@ public class Customer {
         return email;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
     @Override
     public String toString() {
         String out = "\n==================\n";
@@ -37,4 +45,22 @@ public class Customer {
         out += "==================\n";
         return out;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o == this) {
+            return true;
+        }
+        if (!(o.getClass() == this.getClass())) {
+            return false;
+        }
+        Customer customer = (Customer) o;
+        return customer.getName().equals(this.getName()) &&
+                customer.getEmail().toLowerCase().equals(this.getEmail().toLowerCase());
+    }
+
+
 }

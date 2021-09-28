@@ -2,9 +2,9 @@ package model;
 
 public class Room implements IRoom {
 
-    String roomNumber;
-    Double price;
-    RoomType enumeration;
+    private final String roomNumber;
+    private final Double price;
+    private final RoomType enumeration;
 
     public Room(String roomNumber, Double price, RoomType type) {
         this.roomNumber = roomNumber;
@@ -30,11 +30,29 @@ public class Room implements IRoom {
 
     @Override
     public String toString() {
-        String out = "\n==================";
-        out += "Room number: " + roomNumber;
-        out += "Price: $" + price.toString() + " per night";
-        out += "Room type: " + enumeration.toString();
-        out = "\n==================";
+        String out = "\n==================\n";
+        out += "Room number: " + roomNumber + "\n";
+        out += "Price: " + (isFree() ? "Free\n" : "$" + price.toString() + " per night\n");
+        out += "Room type: " + enumeration.toString() + "\n";
+        out += "==================";
         return out;
+    }
+
+    /**
+     * @param o o: the room want to compare to
+     * @return 1. if the two IRoom instances have an identical address, return true
+     * 2. if class names of the two IRoom objects are different, return false
+     * 3. if Room number is identical, return true
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!o.getClass().getName().equals(this.getClass().getName())) {
+            return false;
+        }
+        IRoom room = (IRoom) o;
+        return room.getRoomNumber().equals(this.roomNumber);
     }
 }

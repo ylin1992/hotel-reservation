@@ -6,12 +6,7 @@ public class FreeRoom extends Room {
     }
 
     @Override
-    public String toString() {
-        String out = "\n==================";
-        out += "Room number: " + roomNumber;
-        out += "Price: Free";
-        out += "Room type: " + enumeration.toString();
-        out = "\n==================";
-        return out;
+    public boolean isFree() {
+        return true;
     }
 }

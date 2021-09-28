@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class ReservationService {
 
     HashMap<Customer, Reservation> reservations;
+    
 
     public void addRoom(IRoom room) {
 
