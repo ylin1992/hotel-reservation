@@ -1,3 +1,7 @@
+package driver;
+
+import api.AdminResource;
+import api.HotelResource;
 import model.*;
 import service.CustomerService;
 import service.ReservationService;
@@ -103,7 +107,7 @@ public class Driver {
         ReservationService reservationService = ReservationService.getInstance();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
         reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
-        reservationService.displayAllRooms();
+        //reservationService.displayAllRooms();
         //reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
         System.out.println(reservationService.getARoom("101"));
         System.out.println(reservationService.getARoom("103"));
@@ -151,8 +155,11 @@ public class Driver {
         Date[] dates3 = DriverHelper.getDates(new int[]{2021, 10, 17}, new int[]{2021, 10, 19});
         Date[] dates4 = DriverHelper.getDates(new int[]{2021, 10, 22}, new int[]{2021, 10, 25});
         Date[] dates5 = DriverHelper.getDates(new int[]{2021, 10, 13}, new int[]{2021, 10, 16});
-        ReservationService reservationService = DriverHelper.initializeReservationService();
-        List<Customer> customerList = DriverHelper.initializeCustomerList();
+        DriverHelper.initializeReservationService();
+        DriverHelper.initializeCustomerService();
+
+        ReservationService reservationService = ReservationService.getInstance();
+        CustomerService customerService = CustomerService.getInstance();
 
         // find rooms
         List<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
@@ -163,24 +170,29 @@ public class Driver {
         // get a room
         //System.out.println(reservationService.getARoom("10"));
 
+        Customer customer = customerService.getCustomer("Leo@gmail.com");
+
         // reserve room
-        Reservation reservation = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates1[0], dates1[1]);
-        Reservation reservation2 = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates2[0], dates2[1]);
-        Reservation reservation3 = reservationService.reserveARoom(customerList.get(0), rooms.get(0), dates3[0], dates3[1]);
-        Reservation reservation4 = reservationService.reserveARoom(customerList.get(1), rooms.get(1), dates1[0], dates1[1]);
-        //Reservation reservation5 = reservationService.reserveARoom(customerList.get(0), rooms.get(1), dates1[0], dates1[1]);
+        Reservation reservation = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates1[0], dates1[1]);
+        Reservation reservation2 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates2[0], dates2[1]);
+        Reservation reservation3 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates3[0], dates3[1]);
+        Reservation reservation4 = reservationService.reserveARoom(customerService.getCustomer("Wang@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
+        //Reservation reservation5 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
         reservationService.printAllReservation();
     }
 
+    public static void testAdminApi() {
+        AdminResource adminResource = AdminResource.getInstance();
+        HotelResource hotelResource = HotelResource.getInstance();
+        List<IRoom> rooms = DriverHelper.getRoomList(false, false);
+        adminResource.addRoom(rooms);
+        List<IRoom> retrievedRooms = adminResource.getAllRooms();
 
-    public static void main(String[] args) {
-        //Driver.testModelCustomer();
-        //Driver.testCustomerService();
-        //testRoom();
-        //testModelReservation();
-        //testRoom();
-        //testReservationService();
-        testReservation();
-
+        DriverHelper.initializeCustomerService(); // add some default customers, in which "Leo@gmail.com" has already existed
+        hotelResource.createACustomer("Leo@gmail.com", "XX", "Wang");
+        List<Customer> retrievedCustomers = (List<Customer>) adminResource.getAllCustomers();
+        System.out.println();
     }
+
+
 }

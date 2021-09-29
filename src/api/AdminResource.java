@@ -2,28 +2,56 @@ package api;
 
 import model.Customer;
 import model.IRoom;
+import service.CustomerService;
+import service.ReservationService;
 
 import java.util.Collection;
 import java.util.List;
 
 public class AdminResource {
+
+    private static AdminResource instance = null;
+    private CustomerService customerService;
+    private ReservationService reservationService;
+
+    private AdminResource() {
+        customerService = CustomerService.getInstance();
+        reservationService = ReservationService.getInstance();
+    }
+
+    public static AdminResource getInstance() {
+        if (instance == null) {
+            instance = new AdminResource();
+        }
+        return instance;
+    }
+
     public Customer getCustomer(String email) {
-        throw new UnsupportedOperationException();
+        return customerService.getCustomer(email);
     }
 
     public void addRoom(List<IRoom> rooms) {
-        throw new UnsupportedOperationException();
+        if (rooms == null) {
+            return;
+        }
+        for (IRoom room : rooms) {
+            try {
+                reservationService.addRoom(room);
+            } catch (Exception ex) {
+                System.out.println(ex.getLocalizedMessage());
+            }
+        }
     }
 
-    public Collection<IRoom> getAllRooms() {
-        throw new UnsupportedOperationException();
+    public List<IRoom> getAllRooms() {
+        return reservationService.getAllRooms();
     }
 
     public Collection<Customer> getAllCustomers() {
-        throw new UnsupportedOperationException();
+        return customerService.getAllCustomers();
     }
 
     public void displayAllReservation() {
-        throw new UnsupportedOperationException();
+        reservationService.printAllReservation();
     }
 }

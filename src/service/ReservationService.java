@@ -17,7 +17,7 @@ public class ReservationService {
 
     public static ReservationService getInstance() {
         if (instance == null) {
-            return new ReservationService();
+            instance = new ReservationService();
         }
         return instance;
     }
@@ -115,10 +115,12 @@ public class ReservationService {
     }
 
     @SuppressFBWarnings("HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS")
-    public void displayAllRooms() {
+    public List<IRoom> getAllRooms() {
+        List<IRoom> rooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
-            System.out.println(room);
+            rooms.add(room);
         }
+        return rooms;
     }
 
 }

@@ -15,7 +15,7 @@ public class CustomerService {
 
     public static CustomerService getInstance() {
         if (instance == null) {
-            return new CustomerService();
+            instance = new CustomerService();
         }
         return instance;
     }
@@ -38,7 +38,7 @@ public class CustomerService {
 
     public Customer getCustomer(String customerEmail) {
         if (customers.containsKey(customerEmail.toLowerCase())) {
-            return customers.get(customerEmail);
+            return customers.get(customerEmail.toLowerCase());
         } else {
             throw new IllegalArgumentException("No email matches: " + customerEmail);
         }

@@ -1,5 +1,7 @@
-import model.Customer;
+package driver;
+
 import model.FreeRoom;
+import model.IRoom;
 import model.Room;
 import model.RoomType;
 import service.CustomerService;
@@ -38,20 +40,36 @@ public class DriverHelper {
         return reservationService;
     }
 
-    public static List<Customer> initializeCustomerList() {
-        List<Customer> list = new ArrayList<>();
-        list.add(new Customer("Leo@gmail.com", "WWW", "Wang"));
-        list.add(new Customer("Wang@gmail.com", "WW", "Wang"));
-        list.add(new Customer("Den@gmail.com", "CC", "Wang"));
-        list.add(new Customer("QQQ@gmail.com", "EE", "Wang"));
-        list.add(new Customer("CCC@gmail.com", "VV", "Wang"));
-        list.add(new Customer("DDD@gmail.com", "CC", "Wang"));
-        list.add(new Customer("WWWW@gmail.com", "EF", "Wang"));
-        return list;
+    public static void initializeCustomerService() {
+        CustomerService customerService = CustomerService.getInstance();
+        customerService.addCustomer("Leo@gmail.com", "K", "Wang");
+        customerService.addCustomer("Wang@gmail.com", "WW", "Tseng");
+        customerService.addCustomer("Den@gmail.com", "CC", "Lin");
+        customerService.addCustomer("QQQ@gmail.com", "EE", "Amy");
+        customerService.addCustomer("CCC@gmail.com", "VV", "Len");
+        customerService.addCustomer("DDD@gmail.com", "CC", "Mung");
+        customerService.addCustomer("WWWW@gmail.com", "EF", "Wen");
     }
 
-    public static CustomerService initializeCustomerService() {
-        CustomerService customerService = CustomerService.getInstance();
-        return customerService;
+    public static List<IRoom> getRoomList(boolean isNull, boolean isEmpty) {
+        if (isNull) {
+            return null;
+        }
+        List<IRoom> rooms = new ArrayList<>();
+        if (isEmpty) {
+            return rooms;
+        }
+
+        rooms.add(new FreeRoom("101", RoomType.SINGLE));
+        rooms.add(new FreeRoom("102", RoomType.DOUBLE));
+        rooms.add(new FreeRoom("103", RoomType.SINGLE));
+        rooms.add(new FreeRoom("104", RoomType.DOUBLE));
+        rooms.add(new FreeRoom("105", RoomType.SINGLE));
+        rooms.add(new FreeRoom("106", RoomType.DOUBLE));
+        rooms.add(new Room("107", 20.8, RoomType.SINGLE));
+        rooms.add(new Room("108", 30.8, RoomType.DOUBLE));
+        rooms.add(new Room("109", 40.8, RoomType.DOUBLE));
+
+        return rooms;
     }
 }
