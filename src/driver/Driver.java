@@ -209,21 +209,26 @@ public class Driver {
     }
 
     public static void testHotelApi() {
-        AdminResource adminResource = AdminResource.getInstance();
-        HotelResource hotelResource = HotelResource.getInstance();
-        List<IRoom> rooms = DriverHelper.getRoomList(false, false);
-        adminResource.addRoom(rooms);
-        Date[] dates = DriverHelper.getDates(new int[]{2021, 10, 30}, new int[]{2021, 11, 8});
-        DriverHelper.initializeCustomerService(); // add some default customers, in which "Leo@gmail.com" has already existed
+        try {
+            AdminResource adminResource = AdminResource.getInstance();
+            HotelResource hotelResource = HotelResource.getInstance();
+            List<IRoom> rooms = DriverHelper.getRoomList(false, false);
+            adminResource.addRoom(rooms);
+            Date[] dates = DriverHelper.getDates(new int[]{2021, 10, 30}, new int[]{2021, 11, 8});
+            DriverHelper.initializeCustomerService(); // add some default customers, in which "Leo@gmail.com" has already existed
 
-        IRoom room = hotelResource.getRoom("101");
-        IRoom room2 = hotelResource.getRoom("110"); // doesn't exist
-        System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
-        System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
+            IRoom room = hotelResource.getRoom("101");
+            IRoom room2 = hotelResource.getRoom("110"); // doesn't exist
+            System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
+            System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
 
-        System.out.println(hotelResource.getRoom("101"));
-        System.out.println(hotelResource.getRoom("201"));
-        System.out.println();
+            System.out.println(hotelResource.getRoom("101"));
+            System.out.println(hotelResource.getRoom("201"));
+            System.out.println();
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+
     }
 
 }

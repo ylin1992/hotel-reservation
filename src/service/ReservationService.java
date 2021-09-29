@@ -86,7 +86,7 @@ public class ReservationService {
 
 
     public List<IRoom> findRooms(Date checkInDate, Date checkOutDate) throws InvalidDateException, NoRoomFoundException {
-        if (isValidDate(checkInDate, checkOutDate)) {
+        if (!isValidDate(checkInDate, checkOutDate)) {
             throw new InvalidDateException("Invalid date, please check your input again");
         }
         List<IRoom> availableRooms = new ArrayList<>();

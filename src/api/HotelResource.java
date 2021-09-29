@@ -1,5 +1,6 @@
 package api;
 
+import exception.UnregisteredRoomException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -44,13 +45,12 @@ public class HotelResource {
         }
     }
 
-    public IRoom getRoom(String roomNumber) {
+    public IRoom getRoom(String roomNumber) throws UnregisteredRoomException {
         try {
             return reservationService.getARoom(roomNumber);
         } catch (Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
+            throw ex;
         }
-        return null;
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
@@ -80,5 +80,11 @@ public class HotelResource {
             System.out.println(ex.getLocalizedMessage());
         }
         return null;
+    }
+
+    public void displayRooms(Collection<IRoom> rooms) {
+        for (IRoom room : rooms) {
+            System.out.println(room);
+        }
     }
 }
