@@ -27,7 +27,12 @@ public class AdminResource {
     }
 
     public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+        try {
+            return customerService.getCustomer(email);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
     public void addRoom(List<IRoom> rooms) {

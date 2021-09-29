@@ -37,7 +37,7 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String customerEmail) {
-        if (customers.containsKey(customerEmail.toLowerCase())) {
+        if (customerEmail != null && customers.containsKey(customerEmail.toLowerCase())) {
             return customers.get(customerEmail.toLowerCase());
         } else {
             throw new IllegalArgumentException("No email matches: " + customerEmail);

@@ -28,7 +28,12 @@ public class HotelResource {
     }
 
     public Customer getCustomer(String email) {
-        throw new UnsupportedOperationException();
+        try {
+            return customerService.getCustomer(email);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
     public void createACustomer(String email, String firstName, String lastName) {
@@ -40,18 +45,40 @@ public class HotelResource {
     }
 
     public IRoom getRoom(String roomNumber) {
-        throw new UnsupportedOperationException();
+        try {
+            return reservationService.getARoom(roomNumber);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
-    public Reservation bookARoom(String customerEmail, Date checkInDate, Date checkOutDate) {
-        throw new UnsupportedOperationException();
+    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
+        try {
+            Customer customer = customerService.getCustomer(customerEmail);
+            return reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
     public Collection<Reservation> getCustomerReservations(String customerEmail) {
-        throw new UnsupportedOperationException();
+        try {
+            Customer customer = customerService.getCustomer(customerEmail);
+            return reservationService.getCustomerReservation(customer);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 
     public Collection<IRoom> findARoom(Date checkInDate, Date checkOutDate) {
-        throw new UnsupportedOperationException();
+        try {
+            return reservationService.findRooms(checkInDate, checkOutDate);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+        return null;
     }
 }

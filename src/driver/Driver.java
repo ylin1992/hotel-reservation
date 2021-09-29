@@ -191,8 +191,26 @@ public class Driver {
         DriverHelper.initializeCustomerService(); // add some default customers, in which "Leo@gmail.com" has already existed
         hotelResource.createACustomer("Leo@gmail.com", "XX", "Wang");
         List<Customer> retrievedCustomers = (List<Customer>) adminResource.getAllCustomers();
+        System.out.println(adminResource.getCustomer(""));
+        System.out.println(adminResource.getCustomer(null));
+        System.out.println(adminResource.getCustomer("123@gmail.com"));
+        System.out.println(adminResource.getCustomer("Leo@gmail.com"));
         System.out.println();
     }
 
+    public static void testHotelApi() {
+        AdminResource adminResource = AdminResource.getInstance();
+        HotelResource hotelResource = HotelResource.getInstance();
+        List<IRoom> rooms = DriverHelper.getRoomList(false, false);
+        adminResource.addRoom(rooms);
+        Date[] dates = DriverHelper.getDates(new int[]{2021, 10, 30}, new int[]{2021, 11, 8});
+        DriverHelper.initializeCustomerService(); // add some default customers, in which "Leo@gmail.com" has already existed
+
+        IRoom room = hotelResource.getRoom("101");
+        IRoom room2 = hotelResource.getRoom("110"); // doesn't exist
+        System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
+        System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
+        System.out.println();
+    }
 
 }
