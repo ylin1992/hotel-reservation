@@ -2,6 +2,7 @@ import model.Customer;
 import model.FreeRoom;
 import model.Room;
 import model.RoomType;
+import service.CustomerService;
 import service.ReservationService;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class DriverHelper {
     }
 
     public static ReservationService initializeReservationService() {
-        ReservationService reservationService = new ReservationService();
+        ReservationService reservationService = ReservationService.getInstance();
+        //ReservationService reservationService = new ReservationService();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
         reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
         reservationService.addRoom(new FreeRoom("103", RoomType.SINGLE));
@@ -46,5 +48,10 @@ public class DriverHelper {
         list.add(new Customer("DDD@gmail.com", "CC", "Wang"));
         list.add(new Customer("WWWW@gmail.com", "EF", "Wang"));
         return list;
+    }
+
+    public static CustomerService initializeCustomerService() {
+        CustomerService customerService = CustomerService.getInstance();
+        return customerService;
     }
 }

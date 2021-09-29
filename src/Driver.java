@@ -22,7 +22,7 @@ public class Driver {
 
     public static void testCustomerService() {
         System.out.println("\n Start testing service/CustomerService \n");
-        CustomerService customerService = new CustomerService();
+        CustomerService customerService = CustomerService.getInstance();
         try {
             customerService.addCustomer("Leo@gmail.com", "Leo", "Wang");
             customerService.addCustomer("Cleo@gmail.com", "Cleo", "Wang");
@@ -100,7 +100,7 @@ public class Driver {
     }
 
     public static void testReservationService() {
-        ReservationService reservationService = new ReservationService();
+        ReservationService reservationService = ReservationService.getInstance();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
         reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
         reservationService.displayAllRooms();

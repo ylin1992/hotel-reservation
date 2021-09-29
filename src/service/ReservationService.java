@@ -13,7 +13,16 @@ public class ReservationService {
     // Room and reserved period
     private HashMap<IRoom, List<Date[]>> roomTable;
 
-    public ReservationService() {
+    private static ReservationService instance = null;
+
+    public static ReservationService getInstance() {
+        if (instance == null) {
+            return new ReservationService();
+        }
+        return instance;
+    }
+
+    private ReservationService() {
         reservations = new HashMap<>();
         roomTable = new HashMap<>();
     }
@@ -72,21 +81,21 @@ public class ReservationService {
         if (checkInDate.compareTo(checkOutDate) >= 0) {
             throw new IllegalArgumentException("Invalid dates");
         }
-        List<IRoom> availbleRooms = new ArrayList<>();
+        List<IRoom> availableRooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
             List<Date[]> list = roomTable.get(room);
             if (list.size() == 0) {
-                availbleRooms.add(room);
+                availableRooms.add(room);
             } else {
                 for (Date[] dates : roomTable.get(room)) {
                     if (isValidRequest(room, dates[0], dates[1])) {
-                        availbleRooms.add(room);
+                        availableRooms.add(room);
                         break;
                     }
                 }
             }
         }
-        return availbleRooms;
+        return availableRooms;
     }
 
     public Collection<Reservation> getCustomerReservation(Customer customer) {

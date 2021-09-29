@@ -11,7 +11,16 @@ public class CustomerService {
     HashMap<String, Customer> customers;
     List<Customer> customersList = new ArrayList<>();
 
-    public CustomerService() {
+    private static CustomerService instance = null;
+
+    public static CustomerService getInstance() {
+        if (instance == null) {
+            return new CustomerService();
+        }
+        return instance;
+    }
+
+    private CustomerService() {
         customers = new HashMap<>();
     }
 
@@ -27,9 +36,6 @@ public class CustomerService {
         }
     }
 
-    /*
-        Using a HashMap to implement constant time searching
-     */
     public Customer getCustomer(String customerEmail) {
         if (customers.containsKey(customerEmail.toLowerCase())) {
             return customers.get(customerEmail);
