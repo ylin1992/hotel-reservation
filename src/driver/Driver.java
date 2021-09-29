@@ -104,81 +104,91 @@ public class Driver {
     }
 
     public static void testReservationService() {
-        ReservationService reservationService = ReservationService.getInstance();
-        reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
-        reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
-        //reservationService.displayAllRooms();
-        //reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
-        System.out.println(reservationService.getARoom("101"));
-        System.out.println(reservationService.getARoom("103"));
+        try {
+            ReservationService reservationService = ReservationService.getInstance();
+            reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
+            reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
+            //reservationService.displayAllRooms();
+            //reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
+            System.out.println(reservationService.getARoom("101"));
+            System.out.println(reservationService.getARoom("103"));
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2021, 10, 14);
-        Date checkInDate = calendar.getTime();
-        calendar.set(2021, 10, 18);
-        Date checkOutDate = calendar.getTime();
-        Customer customer = new Customer("Leo@gmail.com", "Leo", "Wang");
-        IRoom room = new FreeRoom("101", RoomType.SINGLE);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(2021, 10, 14);
+            Date checkInDate = calendar.getTime();
+            calendar.set(2021, 10, 18);
+            Date checkOutDate = calendar.getTime();
+            Customer customer = new Customer("Leo@gmail.com", "Leo", "Wang");
+            IRoom room = new FreeRoom("101", RoomType.SINGLE);
 
-        Reservation reservation1 = reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
-        System.out.println(reservation1);
+            Reservation reservation1 = reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+            System.out.println(reservation1);
 
-        calendar.set(2021, 10, 11);
-        checkInDate = calendar.getTime();
-        calendar.set(2021, 10, 12);
-        checkOutDate = calendar.getTime();
-        Customer customer2 = new Customer("Angela@gmail.com", "Angela", "Wang");
-        Reservation reservation2 = reservationService.reserveARoom(customer2, room, checkInDate, checkOutDate);
-        System.out.println(reservation2);
+            calendar.set(2021, 10, 11);
+            checkInDate = calendar.getTime();
+            calendar.set(2021, 10, 12);
+            checkOutDate = calendar.getTime();
+            Customer customer2 = new Customer("Angela@gmail.com", "Angela", "Wang");
+            Reservation reservation2 = reservationService.reserveARoom(customer2, room, checkInDate, checkOutDate);
+            System.out.println(reservation2);
 
 
-        System.out.println("\n List reservations of a customer");
-        for (Reservation res : reservationService.getCustomerReservation(customer)) {
-            System.out.println(res);
+            System.out.println("\n List reservations of a customer");
+            for (Reservation res : reservationService.getCustomerReservation(customer)) {
+                System.out.println(res);
+            }
+
+
+            calendar.set(2021, 10, 19);
+            checkInDate = calendar.getTime();
+            calendar.set(2021, 10, 20);
+            checkOutDate = calendar.getTime();
+            Customer customer3 = new Customer("Angela@gmail.com", "Angela", "Wang");
+            Reservation reservation3 = reservationService.reserveARoom(customer3, room, checkInDate, checkOutDate);
+
+            System.out.println("Print all reservations");
+            reservationService.printAllReservation();
+
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
         }
-
-
-        calendar.set(2021, 10, 19);
-        checkInDate = calendar.getTime();
-        calendar.set(2021, 10, 20);
-        checkOutDate = calendar.getTime();
-        Customer customer3 = new Customer("Angela@gmail.com", "Angela", "Wang");
-        Reservation reservation3 = reservationService.reserveARoom(customer3, room, checkInDate, checkOutDate);
-
-        System.out.println("Print all reservations");
-        reservationService.printAllReservation();
     }
 
     public static void testReservation() {
-        Date[] dates1 = DriverHelper.getDates(new int[]{2021, 10, 8}, new int[]{2021, 10, 9});
-        Date[] dates2 = DriverHelper.getDates(new int[]{2021, 10, 10}, new int[]{2021, 10, 15});
-        Date[] dates3 = DriverHelper.getDates(new int[]{2021, 10, 17}, new int[]{2021, 10, 19});
-        Date[] dates4 = DriverHelper.getDates(new int[]{2021, 10, 22}, new int[]{2021, 10, 25});
-        Date[] dates5 = DriverHelper.getDates(new int[]{2021, 10, 13}, new int[]{2021, 10, 16});
-        DriverHelper.initializeReservationService();
-        DriverHelper.initializeCustomerService();
+        try {
+            Date[] dates1 = DriverHelper.getDates(new int[]{2021, 10, 8}, new int[]{2021, 10, 9});
+            Date[] dates2 = DriverHelper.getDates(new int[]{2021, 10, 10}, new int[]{2021, 10, 15});
+            Date[] dates3 = DriverHelper.getDates(new int[]{2021, 10, 17}, new int[]{2021, 10, 19});
+            Date[] dates4 = DriverHelper.getDates(new int[]{2021, 10, 22}, new int[]{2021, 10, 25});
+            Date[] dates5 = DriverHelper.getDates(new int[]{2021, 10, 13}, new int[]{2021, 10, 16});
+            DriverHelper.initializeReservationService();
+            DriverHelper.initializeCustomerService();
 
-        ReservationService reservationService = ReservationService.getInstance();
-        CustomerService customerService = CustomerService.getInstance();
+            ReservationService reservationService = ReservationService.getInstance();
+            CustomerService customerService = CustomerService.getInstance();
 
-        // find rooms
-        List<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
+            // find rooms
+            List<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
         /*for (IRoom room : reservationService.findRooms(dates1[0], dates1[1])) {
             System.out.println(room);
         }*/
 
-        // get a room
-        //System.out.println(reservationService.getARoom("10"));
+            // get a room
+            //System.out.println(reservationService.getARoom("10"));
 
-        Customer customer = customerService.getCustomer("Leo@gmail.com");
+            Customer customer = customerService.getCustomer("Leo@gmail.com");
 
-        // reserve room
-        Reservation reservation = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates1[0], dates1[1]);
-        Reservation reservation2 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates2[0], dates2[1]);
-        Reservation reservation3 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates3[0], dates3[1]);
-        Reservation reservation4 = reservationService.reserveARoom(customerService.getCustomer("Wang@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
-        //Reservation reservation5 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
-        reservationService.printAllReservation();
+            // reserve room
+            Reservation reservation = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates1[0], dates1[1]);
+            Reservation reservation2 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates2[0], dates2[1]);
+            Reservation reservation3 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates3[0], dates3[1]);
+            Reservation reservation4 = reservationService.reserveARoom(customerService.getCustomer("Wang@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
+            //Reservation reservation5 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
+            reservationService.printAllReservation();
+
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
     }
 
     public static void testAdminApi() {
@@ -210,6 +220,9 @@ public class Driver {
         IRoom room2 = hotelResource.getRoom("110"); // doesn't exist
         System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
         System.out.println(hotelResource.bookARoom("Leo@gmail.com", room, dates[0], dates[1]));
+
+        System.out.println(hotelResource.getRoom("101"));
+        System.out.println(hotelResource.getRoom("201"));
         System.out.println();
     }
 

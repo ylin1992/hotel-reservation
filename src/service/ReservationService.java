@@ -1,6 +1,8 @@
 package service;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import exception.InvalidDateException;
+import exception.NoRoomFoundException;
+import exception.UnregisteredRoomException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -36,19 +38,16 @@ public class ReservationService {
 
     }
 
-    public IRoom getARoom(String roomId) {
+    public IRoom getARoom(String roomId) throws UnregisteredRoomException {
         for (IRoom room : roomTable.keySet()) {
             if (room.getRoomNumber().equals(roomId)) {
                 return room;
             }
         }
-        throw new IllegalArgumentException("No room matched");
+        throw new UnregisteredRoomException("No room matched");
     }
 
     private boolean isValidRequest(IRoom room, Date checkInDate, Date checkOutDate) {
-        if (!roomTable.containsKey(room)) {
-            return false;
-        }
         if (roomTable.get(room).size() == 0) {
             return true;
         }
@@ -63,7 +62,15 @@ public class ReservationService {
         return true;
     }
 
-    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
+    private boolean isValidDate(Date checkInDate, Date checkOutDate) {
+        return checkInDate.compareTo(checkOutDate) < 0;
+    }
+
+    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) throws InvalidDateException, NoRoomFoundException {
+        if (!isValidDate(checkInDate, checkOutDate)) {
+            throw new InvalidDateException("Invalid date, please check your input again");
+        }
+
         if (isValidRequest(room, checkInDate, checkOutDate)) {
             Reservation reservation = new Reservation(customer, checkInDate, checkOutDate, room);
             if (!reservations.containsKey(customer)) {
@@ -73,14 +80,14 @@ public class ReservationService {
             roomTable.get(room).add(new Date[]{checkInDate, checkOutDate});
             return reservation;
         } else {
-            throw new IllegalArgumentException("Invalid request, please check your room number or dates");
+            throw new NoRoomFoundException("No room within the time period is found");
         }
     }
 
 
-    public List<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
-        if (checkInDate.compareTo(checkOutDate) >= 0) {
-            throw new IllegalArgumentException("Invalid dates");
+    public List<IRoom> findRooms(Date checkInDate, Date checkOutDate) throws InvalidDateException, NoRoomFoundException {
+        if (isValidDate(checkInDate, checkOutDate)) {
+            throw new InvalidDateException("Invalid date, please check your input again");
         }
         List<IRoom> availableRooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
@@ -95,6 +102,9 @@ public class ReservationService {
                     }
                 }
             }
+        }
+        if (availableRooms.size() == 0) {
+            throw new NoRoomFoundException("No room within the time period is found");
         }
         return availableRooms;
     }
@@ -115,7 +125,6 @@ public class ReservationService {
         }
     }
 
-    @SuppressFBWarnings("HE_SIGNATURE_DECLARES_HASHING_OF_UNHASHABLE_CLASS")
     public List<IRoom> getAllRooms() {
         List<IRoom> rooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
