@@ -52,8 +52,8 @@ public class ReservationService {
         }
         for (Date[] dates : roomTable.get(room)) {
             if ((checkInDate.compareTo(dates[0]) <= 0 && checkOutDate.compareTo(dates[1]) >= 0)
-                    || (checkInDate.compareTo(dates[0]) >= 0 && checkInDate.compareTo(dates[1]) <= 0)
-                    || (checkOutDate.compareTo(dates[0]) >= 0 && checkOutDate.compareTo(dates[1]) <= 0)
+                    || (checkInDate.compareTo(dates[0]) >= 0 && checkInDate.compareTo(dates[1]) < 0)
+                    || (checkOutDate.compareTo(dates[0]) > 0 && checkOutDate.compareTo(dates[1]) <= 0)
             ) {
                 return false;
             }
