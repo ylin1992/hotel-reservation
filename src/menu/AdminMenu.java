@@ -1,8 +1,10 @@
 package menu;
 
-import model.Customer;
+import model.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu extends Menu implements IMenu {
@@ -35,7 +37,7 @@ public class AdminMenu extends Menu implements IMenu {
         System.out.println("Please select a number for the menu option");
     }
 
-    public static void seeAllCustomers() {
+    private void seeAllCustomers() {
         Collection<Customer> customers = adminResource.getAllCustomers();
         if (customers != null && !customers.isEmpty()) {
             for (Customer customer : customers) {
@@ -46,22 +48,60 @@ public class AdminMenu extends Menu implements IMenu {
         }
     }
 
+    private void seeAllRooms() {
+        Collection<IRoom> rooms = adminResource.getAllRooms();
+        if (rooms == null || rooms.isEmpty()) {
+            System.out.println("No room has been created");
+            return;
+        }
+        for (IRoom room : rooms) {
+            System.out.println(room);
+        }
+    }
+
+    private void seeAllReservations() {
+        adminResource.displayAllReservation();
+    }
+
+    private void addARoom() {
+        List<IRoom> rooms = new ArrayList<>();
+        while (true) {
+            String roomNumber = MenuHelper.askRoomNum();
+            if (roomNumber == null) break;
+            double price = MenuHelper.askPrice();
+            RoomType roomType = MenuHelper.askRoomType();
+            if (roomType == null) break;
+
+            IRoom room;
+            if (price == 0.0) {
+                room = new FreeRoom(roomNumber, roomType);
+            } else {
+                room = new Room(roomNumber, price, roomType);
+            }
+            rooms.add(room);
+
+            boolean isAgain = MenuHelper.askYesOrNo("Again?");
+            if (!isAgain) {
+                break;
+            }
+        }
+        adminResource.addRoom(rooms);
+    }
 
     @Override
     public void executeAction(int tag) {
-
         switch (tag) {
             case 1:
                 seeAllCustomers();
                 break;
             case 2:
-                System.out.println("Case 2");
+                seeAllRooms();
                 break;
             case 3:
-                System.out.println("Case 3");
+                seeAllReservations();
                 break;
             case 4:
-                System.out.println("Case 4");
+                addARoom();
                 break;
             default:
                 System.out.println("default");
@@ -71,13 +111,18 @@ public class AdminMenu extends Menu implements IMenu {
 
     @Override
     public void startMenu() {
-        displayMenu();
-        String num = scanner.next();
-        try {
-            int intNum = Integer.parseInt(num);
-            executeAction(intNum);
-        } catch (Exception ex) {
-            System.out.println("Please input a number between 1 ~ " + itemNum);
+        while (true) {
+            displayMenu();
+            String num = scanner.next();
+            if (num.equals("5")) {
+                return;
+            }
+            try {
+                int intNum = Integer.parseInt(num);
+                executeAction(intNum);
+            } catch (Exception ex) {
+                System.out.println("Please input a number between 1 ~ " + itemNum);
+            }
         }
     }
 

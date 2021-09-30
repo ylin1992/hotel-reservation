@@ -37,10 +37,11 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String customerEmail) {
+        
         if (customerEmail != null && customers.containsKey(customerEmail.toLowerCase())) {
             return customers.get(customerEmail.toLowerCase());
         } else {
-            throw new IllegalArgumentException("No email matches: " + customerEmail);
+            throw new IllegalArgumentException("Email hasn't been used: " + customerEmail);
         }
     }
 

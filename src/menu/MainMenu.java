@@ -4,6 +4,7 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 import utils.DateHelper;
+import utils.FormatHelper;
 
 import java.util.Collection;
 import java.util.Date;
@@ -31,7 +32,8 @@ public class MainMenu extends Menu implements IMenu {
 
     @Override
     public void displayMenu() {
-        System.out.println("\n-------------------------------------------------\n");
+        System.out.println("Main menu");
+        System.out.println("-------------------------------------------------\n");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
         System.out.println("3. Create an account");
@@ -98,12 +100,19 @@ public class MainMenu extends Menu implements IMenu {
         }
     }
 
-    public static void createAnAccount() {
+    private static void createAnAccount() {
         Scanner scanner = new Scanner(System.in);
         String userEmail;
-        System.out.println("Your email: (enter exit to quit)");
-        userEmail = scanner.next();
-        if (userEmail.equals("exit")) return;
+        while (true) {
+            System.out.println("Your email: (enter exit to quit)");
+            userEmail = scanner.next();
+            if (userEmail.equals("exit")) return;
+            if (!FormatHelper.emailMatcher(userEmail)) {
+                System.out.println("Wrong email format, please type again.");
+                continue;
+            }
+            break;
+        }
 
         Customer customer = MenuHelper.getCustomerByEmail(userEmail);
         if (customer != null) {

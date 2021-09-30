@@ -2,7 +2,6 @@ package service;
 
 import exception.InvalidDateException;
 import exception.NoRoomFoundException;
-import exception.UnregisteredRoomException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -38,13 +37,13 @@ public class ReservationService {
 
     }
 
-    public IRoom getARoom(String roomId) throws UnregisteredRoomException {
+    public IRoom getARoom(String roomId) {
         for (IRoom room : roomTable.keySet()) {
             if (room.getRoomNumber().equals(roomId)) {
                 return room;
             }
         }
-        throw new UnregisteredRoomException("No room matched");
+        return null;
     }
 
     private boolean isValidRequest(IRoom room, Date checkInDate, Date checkOutDate) {
@@ -80,7 +79,7 @@ public class ReservationService {
             roomTable.get(room).add(new Date[]{checkInDate, checkOutDate});
             return reservation;
         } else {
-            throw new NoRoomFoundException("");
+            throw new NoRoomFoundException("No room was found");
         }
     }
 
@@ -118,6 +117,9 @@ public class ReservationService {
     }
 
     public void printAllReservation() {
+        if (reservations.size() == 0) {
+            System.out.println("No reservation has been created.");
+        }
         for (List<Reservation> reservationList : reservations.values()) {
             for (Reservation reservation : reservationList) {
                 System.out.println(reservation);

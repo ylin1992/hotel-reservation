@@ -2,7 +2,6 @@ package api;
 
 import exception.InvalidDateException;
 import exception.NoRoomFoundException;
-import exception.UnregisteredRoomException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -47,7 +46,7 @@ public class HotelResource {
         }
     }
 
-    public IRoom getRoom(String roomNumber) throws UnregisteredRoomException {
+    public IRoom getRoom(String roomNumber) {
         try {
             return reservationService.getARoom(roomNumber);
         } catch (Exception ex) {

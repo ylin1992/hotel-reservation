@@ -3,7 +3,9 @@ package menu;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import model.RoomType;
 import utils.DateHelper;
+import utils.FormatHelper;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -41,6 +43,10 @@ public class MenuHelper extends Menu {
         while (true) {
             System.out.println("Your email: (enter exit to quit)");
             String userEmail = scanner.next();
+            if (!FormatHelper.emailMatcher(userEmail)) {
+                System.out.println("Wrong email format, please enter again");
+                continue;
+            }
             if (userEmail.equals("exit")) return null;
             return getCustomerByEmail(userEmail);
         }
@@ -59,6 +65,7 @@ public class MenuHelper extends Menu {
                 return hotelResource.bookARoom(email, room, checkInDate, checkOutDate);
             } catch (Exception ex) {
                 System.out.println(ex.getLocalizedMessage());
+                System.out.println("Try again.");
             }
         }
     }
@@ -121,6 +128,57 @@ public class MenuHelper extends Menu {
                 hotelResource.createACustomer(userEmail, firstName, lastName);
             } catch (Exception ex) {
                 System.out.println(ex.getLocalizedMessage());
+            }
+        }
+    }
+
+    public static String askRoomNum() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter room number: (enter exit to quit)");
+            String roomNumber = scanner.next();
+            if (roomNumber.equals("exit")) {
+                return null;
+            }
+            if (roomNumber.length() > 0) {
+                IRoom room = hotelResource.getRoom(roomNumber);
+                if (room == null) {
+                    return roomNumber;
+                } else {
+                    System.out.println("The room number has been used, pick another name.");
+                }
+            } else {
+                System.out.println("Please make sure your input is not empty");
+            }
+        }
+    }
+
+    public static double askPrice() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Enter price: (in number)");
+            String priceInString = scanner.next();
+            try {
+                return Double.parseDouble(priceInString);
+            } catch (Exception ex) {
+                System.out.println("Please enter a number.");
+            }
+        }
+    }
+
+    public static RoomType askRoomType() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Single or Double bed? (Single: s, Double: d, Exit: exit)");
+            String type = scanner.next();
+            if (type.equals("d")) {
+                return RoomType.DOUBLE;
+            } else if (type.equals("s")) {
+                return RoomType.SINGLE;
+            } else if (type.equals("exit")) {
+                return null;
+            } else {
+                System.out.println("Please make sure your input is valid (Single: s, Double: d, Exit: exit)");
             }
         }
     }
