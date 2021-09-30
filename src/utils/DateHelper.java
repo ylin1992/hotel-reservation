@@ -24,7 +24,7 @@ public class DateHelper {
             dateInInt[i] = Integer.parseInt(strings[i]);
         }
         Date currentDate = calendar.getTime();
-        calendar.set(dateInInt[0], dateInInt[1], dateInInt[2]);
+        calendar.set(dateInInt[0], dateInInt[1] - 1, dateInInt[2]);
         return calendar.getTime();
     }
 
