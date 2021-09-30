@@ -168,7 +168,7 @@ public class Driver {
             CustomerService customerService = CustomerService.getInstance();
 
             // find rooms
-            List<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
+            Collection<IRoom> rooms = reservationService.findRooms(dates1[0], dates1[1]);
         /*for (IRoom room : reservationService.findRooms(dates1[0], dates1[1])) {
             System.out.println(room);
         }*/

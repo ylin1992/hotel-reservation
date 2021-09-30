@@ -56,8 +56,4 @@ public class Room implements IRoom {
         return room.getRoomNumber().equals(this.roomNumber);
     }
 
-    /*@Override
-    public int hashCode() {
-        return roomNumber.hashCode();
-    }*/
 }
