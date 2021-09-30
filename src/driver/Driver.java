@@ -179,10 +179,10 @@ public class Driver {
             Customer customer = customerService.getCustomer("Leo@gmail.com");
 
             // reserve room
-            Reservation reservation = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates1[0], dates1[1]);
-            Reservation reservation2 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates2[0], dates2[1]);
-            Reservation reservation3 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates3[0], dates3[1]);
-            Reservation reservation4 = reservationService.reserveARoom(customerService.getCustomer("Wang@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
+            //Reservation reservation = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates1[0], dates1[1]);
+            //Reservation reservation2 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates2[0], dates2[1]);
+            //Reservation reservation3 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(0), dates3[0], dates3[1]);
+            //Reservation reservation4 = reservationService.reserveARoom(customerService.getCustomer("Wang@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
             //Reservation reservation5 = reservationService.reserveARoom(customerService.getCustomer("Leo@gmail.com"), rooms.get(1), dates1[0], dates1[1]);
             reservationService.printAllReservation();
 

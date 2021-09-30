@@ -80,7 +80,7 @@ public class AdminMenu extends Menu implements IMenu {
             }
             rooms.add(room);
 
-            boolean isAgain = MenuHelper.askYesOrNo("Again?");
+            boolean isAgain = MenuHelper.askYesOrNo("Add another room? (y/n)");
             if (!isAgain) {
                 break;
             }

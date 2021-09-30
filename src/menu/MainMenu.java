@@ -57,6 +57,10 @@ public class MainMenu extends Menu implements IMenu {
             if (checkInDate == null) return;
             checkOutDate = MenuHelper.askDate("When do you want to check out? (yyyy/mm/dd)");
             if (checkOutDate == null) return;
+            if (checkInDate.compareTo(checkOutDate) >= 0) {
+                System.out.println("Check in date is later than or identical to check in date, try again");
+                continue;
+            }
             rooms = hotelResource.findARoom(checkInDate, checkOutDate);
             if (rooms == null) {
                 System.out.println("No room is available, looking for next week...");

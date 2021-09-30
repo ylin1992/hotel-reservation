@@ -43,6 +43,7 @@ public class MenuHelper extends Menu {
         while (true) {
             System.out.println("Your email: (enter exit to quit)");
             String userEmail = scanner.next();
+            if (userEmail.equals("exit")) return null;
             if (!FormatHelper.emailMatcher(userEmail)) {
                 System.out.println("Wrong email format, please enter again");
                 continue;
