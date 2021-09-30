@@ -1,4 +1,5 @@
 import driver.DriverHelper;
+import menu.AdminMenu;
 import menu.MainMenu;
 
 import java.util.Scanner;
@@ -11,16 +12,19 @@ public class App {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Hotel Reservation Application");
-        MainMenu.displayMenu();
-
-        MainMenu mainMenu = new MainMenu();
-
+        MainMenu mainMenu = MainMenu.getInstance();
+        AdminMenu adminMenu = AdminMenu.getInstance();
         while (true) {
+            mainMenu.displayMenu();
             String num = scanner.next();
-            System.out.println(num);
             try {
                 int intNum = Integer.parseInt(num);
-                mainMenu.executeAction(intNum);
+                mainMenu.checkTagValidity(intNum);
+                if (intNum != 4) {
+                    mainMenu.executeAction(intNum);
+                } else {
+                    adminMenu.displayMenu();
+                }
             } catch (Exception ex) {
                 System.out.println("Please input a number between 1 ~ 5");
             }

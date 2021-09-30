@@ -1,24 +1,36 @@
 package menu;
 
-import exception.UndefinedActionException;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import utils.DateHelper;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Scanner;
 
 public class MainMenu extends Menu implements IMenu {
 
     String dateRegix;
+    Scanner scanner;
+    private static MainMenu instance = null;
 
-    public MainMenu() {
+    private MainMenu() {
         super();
         dateRegix = "^\\d{4}/\\d{2}/\\d{2}$";
+        itemNum = 5;
+        scanner = new Scanner(System.in);
     }
 
+    public static MainMenu getInstance() {
+        if (instance == null) {
+            instance = new MainMenu();
+        }
+        return instance;
+    }
 
-    public static void displayMenu() {
+    @Override
+    public void displayMenu() {
         System.out.println("\n-------------------------------------------------\n");
         System.out.println("1. Find and reserve a room");
         System.out.println("2. See my reservations");
@@ -35,36 +47,125 @@ public class MainMenu extends Menu implements IMenu {
         if (customer == null) return;
 
         // find a room
-        Date checkInDate = MenuHelper.askDate("When do you want to check in? (yyyy/mm/dd)");
-        Date checkOutDate = MenuHelper.askDate("When do you want to check out? (yyyy/mm/dd)");
+        Collection<IRoom> rooms;
+        Date checkInDate;
+        Date checkOutDate;
+        while (true) {
+            checkInDate = MenuHelper.askDate("When do you want to check in? (yyyy/mm/dd)");
+            if (checkInDate == null) return;
+            checkOutDate = MenuHelper.askDate("When do you want to check out? (yyyy/mm/dd)");
+            if (checkOutDate == null) return;
+            rooms = hotelResource.findARoom(checkInDate, checkOutDate);
+            if (rooms == null) {
+                System.out.println("No room is available, looking for next week...");
+                rooms = hotelResource.findARoom(DateHelper.addDate(checkInDate, 7), DateHelper.addDate(checkOutDate, 7));
+                if (rooms == null) {
+                    boolean isAgain = MenuHelper.askYesOrNo("Do you want to search again?");
+                    if (!isAgain) {
+                        return;
+                    }
+                } else {
+                    System.out.println("We got some rooms available next week: ");
+                    hotelResource.displayRooms(rooms);
+                    boolean isAgain = MenuHelper.askYesOrNo("Do you want to search for next week ? (y/n)");
+                    if (!isAgain) {
+                        return;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
 
-        Collection<IRoom> rooms = hotelResource.findARoom(checkInDate, checkOutDate);
-        System.out.println("Rooms that apply: ");
+        System.out.println("Available rooms: ");
         hotelResource.displayRooms(rooms);
 
         Reservation reservation = MenuHelper.askReservation(checkInDate, checkOutDate, customer.getEmail());
         if (reservation == null) return; // user quits the program
-        System.out.println("Reservation info");
+        System.out.println("Success, your reservation info is listed as follows");
         System.out.println(reservation);
+    }
+
+
+    private static void seeReservations() {
+        Customer customer = MenuHelper.askEmail();
+        if (customer == null) return;
+
+        Collection<Reservation> reservations = hotelResource.getCustomerReservations(customer.getEmail());
+        if (reservations != null) {
+            System.out.println("Your reservations: ");
+            hotelResource.displayReservations(reservations);
+        }
+    }
+
+    public static void createAnAccount() {
+        Scanner scanner = new Scanner(System.in);
+        String userEmail;
+        System.out.println("Your email: (enter exit to quit)");
+        userEmail = scanner.next();
+        if (userEmail.equals("exit")) return;
+
+        Customer customer = MenuHelper.getCustomerByEmail(userEmail);
+        if (customer != null) {
+            System.out.println("You are already in the list");
+            return;
+        }
+
+        System.out.println("Please enter your first name: ");
+        String firstName = scanner.next();
+
+        System.out.println("Please enter your last name: ");
+        String lastName = scanner.next();
+
+        try {
+            hotelResource.createACustomer(userEmail, firstName, lastName);
+            System.out.println("Success");
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+
+
     }
 
     @Override
     public void executeAction(int tag) {
+
         switch (tag) {
             case 1:
                 reserveARoom();
                 break;
             case 2:
+                seeReservations();
+                break;
+            case 3:
+                createAnAccount();
                 break;
             default:
+                System.out.println("GoodBye!");
+                System.exit(0);
                 break;
         }
     }
 
     @Override
-    public void checkTagValidity(int tag) throws UndefinedActionException {
-        if (tag < 1 || tag > 5) {
-            throw new UndefinedActionException("");
+    public void startMenu() {
+        AdminMenu adminMenu = AdminMenu.getInstance();
+
+        while (true) {
+            displayMenu();
+            String num = scanner.next();
+            try {
+                int intNum = Integer.parseInt(num);
+                checkTagValidity(intNum);
+                if (intNum != 4) {
+                    executeAction(intNum);
+                } else {
+                    adminMenu.startMenu();
+                }
+            } catch (Exception ex) {
+                System.out.println("Please input a number between 1 ~ " + itemNum);
+            }
         }
     }
+
 }

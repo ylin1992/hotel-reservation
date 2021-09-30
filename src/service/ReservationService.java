@@ -80,14 +80,14 @@ public class ReservationService {
             roomTable.get(room).add(new Date[]{checkInDate, checkOutDate});
             return reservation;
         } else {
-            throw new NoRoomFoundException("No room within the time period is found");
+            throw new NoRoomFoundException("");
         }
     }
 
 
     public List<IRoom> findRooms(Date checkInDate, Date checkOutDate) throws InvalidDateException, NoRoomFoundException {
         if (!isValidDate(checkInDate, checkOutDate)) {
-            throw new InvalidDateException("Invalid date, please check your input again");
+            throw new InvalidDateException("");
         }
         List<IRoom> availableRooms = new ArrayList<>();
         for (IRoom room : roomTable.keySet()) {
@@ -96,7 +96,7 @@ public class ReservationService {
                 availableRooms.add(room);
             } else {
                 for (Date[] dates : roomTable.get(room)) {
-                    if (isValidRequest(room, dates[0], dates[1])) {
+                    if (isValidRequest(room, checkInDate, checkOutDate)) {
                         availableRooms.add(room);
                         break;
                     }

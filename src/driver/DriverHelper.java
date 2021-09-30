@@ -29,14 +29,14 @@ public class DriverHelper {
         ReservationService reservationService = ReservationService.getInstance();
         //ReservationService reservationService = new ReservationService();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
-        reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
-        reservationService.addRoom(new FreeRoom("103", RoomType.SINGLE));
-        reservationService.addRoom(new FreeRoom("104", RoomType.DOUBLE));
-        reservationService.addRoom(new FreeRoom("105", RoomType.SINGLE));
-        reservationService.addRoom(new FreeRoom("106", RoomType.DOUBLE));
-        reservationService.addRoom(new Room("107", 20.8, RoomType.SINGLE));
-        reservationService.addRoom(new Room("108", 30.8, RoomType.DOUBLE));
-        reservationService.addRoom(new Room("109", 40.8, RoomType.DOUBLE));
+        //reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
+        //reservationService.addRoom(new FreeRoom("103", RoomType.SINGLE));
+        //reservationService.addRoom(new FreeRoom("104", RoomType.DOUBLE));
+        //reservationService.addRoom(new FreeRoom("105", RoomType.SINGLE));
+        //reservationService.addRoom(new FreeRoom("106", RoomType.DOUBLE));
+        //reservationService.addRoom(new Room("107", 20.8, RoomType.SINGLE));
+        //reservationService.addRoom(new Room("108", 30.8, RoomType.DOUBLE));
+        //reservationService.addRoom(new Room("109", 40.8, RoomType.DOUBLE));
         return reservationService;
     }
 
@@ -72,4 +72,5 @@ public class DriverHelper {
 
         return rooms;
     }
+
 }

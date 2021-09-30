@@ -1,5 +1,7 @@
 package api;
 
+import exception.InvalidDateException;
+import exception.NoRoomFoundException;
 import exception.UnregisteredRoomException;
 import model.Customer;
 import model.IRoom;
@@ -53,14 +55,13 @@ public class HotelResource {
         }
     }
 
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
+    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) throws NoRoomFoundException, InvalidDateException {
         try {
             Customer customer = customerService.getCustomer(customerEmail);
             return reservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
         } catch (Exception ex) {
-            System.out.println(ex.getLocalizedMessage());
+            throw ex;
         }
-        return null;
     }
 
     public Collection<Reservation> getCustomerReservations(String customerEmail) {
@@ -78,13 +79,22 @@ public class HotelResource {
             return reservationService.findRooms(checkInDate, checkOutDate);
         } catch (Exception ex) {
             System.out.println(ex.getLocalizedMessage());
+            return null;
         }
-        return null;
+
     }
 
     public void displayRooms(Collection<IRoom> rooms) {
         for (IRoom room : rooms) {
             System.out.println(room);
+        }
+    }
+
+    public void displayReservations(Collection<Reservation> reservations) {
+        if (reservations != null && !reservations.isEmpty()) {
+            for (Reservation reservation : reservations) {
+                System.out.println(reservation);
+            }
         }
     }
 }
