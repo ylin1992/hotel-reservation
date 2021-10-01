@@ -7,7 +7,6 @@ public class App {
         // Uncomment if you want to test the application with some pre-loaded users and rooms
         DriverHelper.initializeCustomerService();
         DriverHelper.initializeReservationService();
-        //Driver.testFindRooms();
 
 
         System.out.println("Welcome to the Hotel Reservation Application");

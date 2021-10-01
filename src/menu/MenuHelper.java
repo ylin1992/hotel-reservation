@@ -2,7 +2,6 @@ package menu;
 
 import model.Customer;
 import model.IRoom;
-import model.Reservation;
 import model.RoomType;
 import utils.DateHelper;
 import utils.FormatHelper;
@@ -54,31 +53,53 @@ public class MenuHelper extends Menu {
         }
     }
 
-    public static Reservation askReservation(Date checkInDate, Date checkOutDate, String email, Collection<IRoom> rooms) {
+    public static IRoom askRoom() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Enter a room number: (enter exit to quit)");
-
             String inputRoomNumber = scanner.next();
             if (inputRoomNumber.equals("exit")) {
                 return null;
             }
-
-            try {
-                IRoom room = hotelResource.getRoom(inputRoomNumber);
-                Date[] recommendedDates = room.getAvailableDates();
-                if (room != null && recommendedDates[0].compareTo(checkInDate) != 0) {
-                    System.out.println("Applying recommended date...");
-                    checkInDate = recommendedDates[0];
-                    checkOutDate = recommendedDates[1];
-                }
-                return hotelResource.bookARoom(email, room, checkInDate, checkOutDate);
-            } catch (Exception ex) {
-                System.out.println(ex.getLocalizedMessage());
-                System.out.println("Try again.");
+            IRoom room = hotelResource.getRoom(inputRoomNumber);
+            if (room == null) {
+                System.out.println("No matched room was found, try again");
+            } else {
+                return room;
             }
         }
     }
+
+    public static boolean isSameDate(IRoom room, Date checkInDate, Date checkOutDate) {
+        Date[] dates = room.getAvailableDates();
+        return (dates[0].compareTo(checkInDate) == 0 && dates[1].compareTo(checkOutDate) == 0);
+    }
+
+    //public static Reservation askReservation(Date checkInDate, Date checkOutDate, String email, Collection<IRoom> rooms) {
+    //    Scanner scanner = new Scanner(System.in);
+    //    while (true) {
+    //        System.out.println("Enter a room number: (enter exit to quit)");
+    //
+    //        String inputRoomNumber = scanner.next();
+    //        if (inputRoomNumber.equals("exit")) {
+    //            return null;
+    //        }
+    //
+    //        try {
+    //            IRoom room = hotelResource.getRoom(inputRoomNumber);
+    //            Date[] recommendedDates = room.getAvailableDates();
+    //            if (room != null && recommendedDates[0].compareTo(checkInDate) != 0) {
+    //                System.out.println("Applying recommended date...");
+    //                checkInDate = recommendedDates[0];
+    //                checkOutDate = recommendedDates[1];
+    //            }
+    //            return hotelResource.bookARoom(email, room, checkInDate, checkOutDate);
+    //        } catch (Exception ex) {
+    //            System.out.println(ex.getLocalizedMessage());
+    //            System.out.println("Try again.");
+    //        }
+    //    }
+    //}
 
     public static boolean askYesOrNo(String title) {
         Scanner scanner = new Scanner(System.in);

@@ -28,8 +28,8 @@ public class DriverHelper {
         CustomerService customerService = CustomerService.getInstance();
         //ReservationService reservationService = new ReservationService();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
-        //reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
-        //reservationService.addRoom(new FreeRoom("103", RoomType.SINGLE));
+        reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
+        reservationService.addRoom(new FreeRoom("103", RoomType.SINGLE));
         //reservationService.addRoom(new FreeRoom("104", RoomType.DOUBLE));
         //reservationService.addRoom(new FreeRoom("105", RoomType.SINGLE));
         //reservationService.addRoom(new FreeRoom("106", RoomType.DOUBLE));
@@ -42,8 +42,20 @@ public class DriverHelper {
         Date checkIn = DateHelper.getDateFromInt(2021, 11, 11);
         Date checkOut = DateHelper.getDateFromInt(2021, 11, 17);
         Customer customer = customerService.getCustomer("leo@gmail.com");
+
+        IRoom room2 = reservationService.getARoom("102");
+        Date checkIn2 = DateHelper.getDateFromInt(2021, 11, 11);
+        Date checkOut2 = DateHelper.getDateFromInt(2021, 11, 17);
+        Customer customer2 = customerService.getCustomer("leo@gmail.com");
+
+        IRoom room3 = reservationService.getARoom("103");
+        Date checkIn3 = DateHelper.getDateFromInt(2021, 11, 11);
+        Date checkOut3 = DateHelper.getDateFromInt(2021, 11, 17);
+        Customer customer3 = customerService.getCustomer("leo@gmail.com");
         try {
             reservationService.reserveARoom(customer, room, checkIn, checkOut);
+            reservationService.reserveARoom(customer2, room2, checkIn2, checkOut2);
+            reservationService.reserveARoom(customer3, room3, checkIn3, checkOut3);
         } catch (Exception ex) {
             System.out.println(ex.getLocalizedMessage());
         }

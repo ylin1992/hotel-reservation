@@ -37,7 +37,6 @@ public class Room implements IRoom {
         out += "Room number: " + roomNumber + "\n";
         out += "Price: " + (isFree() ? "Free\n" : "$" + price.toString() + " per night\n");
         out += "Room type: " + enumeration.toString() + "\n";
-        out += availableDates == null ? "" : "Available dates:" + availableDates[0] + " ~ " + availableDates[1] + "\n";
         out += "==================";
         return out;
     }

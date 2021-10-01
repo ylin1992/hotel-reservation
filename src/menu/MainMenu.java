@@ -51,6 +51,8 @@ public class MainMenu extends Menu implements IMenu {
         Collection<IRoom> rooms;
         Date checkInDate;
         Date checkOutDate;
+        IRoom room;
+        Reservation reservation = null;
         // find a room
         while (true) {
             Date[] dates = MenuHelper.askDates();
@@ -60,15 +62,32 @@ public class MainMenu extends Menu implements IMenu {
             rooms = hotelResource.findARoom(checkInDate, checkOutDate);
             System.out.println("Your recommended rooms and available dates are listed as follows: ");
             hotelResource.displayRooms(rooms);
-            System.out.println("Do you want us to automatically apply your travel dates as the recommended dates?");
-            boolean yesOrNo = MenuHelper.askYesOrNo("press n to search again, press y to apply dates automatically after selecting room");
-            if (yesOrNo) {
+
+            room = MenuHelper.askRoom();
+            if (room == null) return;
+            if (!MenuHelper.isSameDate(room, checkInDate, checkOutDate)) {
+                System.out.println("The room number you provided is not available in your travel dates");
+                System.out.println("Do you want us to automatically apply your travel dates as the recommended dates? ");
+                System.out.println("Recommended date: " + room.getAvailableDates()[0] + " ~ " + room.getAvailableDates()[1]);
+                boolean yesOrNo = MenuHelper.askYesOrNo("press n to search again, press y to apply dates");
+                if (yesOrNo) {
+                    checkInDate = room.getAvailableDates()[0];
+                    checkOutDate = room.getAvailableDates()[1];
+                    break;
+                }
+            } else {
                 break;
             }
         }
 
+        try {
+            reservation = hotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
 
-        Reservation reservation = MenuHelper.askReservation(checkInDate, checkOutDate, customer.getEmail(), rooms);
+
+        //Reservation reservation = MenuHelper.askReservation(checkInDate, checkOutDate, customer.getEmail(), rooms);
         if (reservation == null) return; // user quits the program
         System.out.println("Success, your reservation info is listed as follows");
         System.out.println(reservation);

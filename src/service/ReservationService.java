@@ -47,7 +47,7 @@ public class ReservationService {
         return null;
     }
 
-    private boolean isValidRequest(IRoom room, Date checkInDate, Date checkOutDate) {
+    boolean isValidRequest(IRoom room, Date checkInDate, Date checkOutDate) {
         if (roomTable.get(room).size() == 0) {
             return true;
         }
@@ -62,7 +62,7 @@ public class ReservationService {
         return true;
     }
 
-    private boolean isValidDate(Date checkInDate, Date checkOutDate) {
+    boolean isValidDate(Date checkInDate, Date checkOutDate) {
         return checkInDate.compareTo(checkOutDate) < 0;
     }
 
@@ -94,10 +94,9 @@ public class ReservationService {
                 if (isValidRequest(room, offsetCheckInDate, offsetCheckOutDate)) {
                     room.setAvailableDates(new Date[]{offsetCheckInDate, offsetCheckOutDate});
                     map.put(room, new Date[]{offsetCheckInDate, offsetCheckOutDate});
-                    break;
                 }
             }
-            if (map.size() == 0 || offset == 1) {
+            if (map.size() == 0 && offset == 0) {
                 System.out.println("No available room found in this period, searching for recommended date...");
             }
             offset += 7;
@@ -111,38 +110,11 @@ public class ReservationService {
         }
         List<IRoom> availableRooms = new ArrayList<>();
         HashMap<IRoom, Date[]> map = findRoomsHelper(checkInDate, checkOutDate);
-
-        //System.out.println("\nRooms available: ");
         for (Map.Entry<IRoom, Date[]> entry : map.entrySet()) {
             Date[] dates = entry.getValue();
             IRoom room = entry.getKey();
             availableRooms.add(room);
-            //System.out.println("Check in date: " + dates[0]);
-            //System.out.println("Check out date: " + dates[1]);
-            //System.out.println(room);
         }
-        //for (IRoom room : roomTable.keySet()) {
-        //    List<Date[]> list = roomTable.get(room);
-        //    if (list.size() == 0) {
-        //        availableRooms.add(room);
-        //    } else {
-        //        for (Date[] dates : roomTable.get(room)) {
-        //            if (isValidRequest(room, checkInDate, checkOutDate)) {
-        //                availableRooms.add(room);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-        //// if no room is found, shift checkInDate and checkOutDate by 1 week and search again.
-        //if (availableRooms.size() == 0) {
-        //    System.out.println("No room is found, check for the next week...");
-        //
-        //}
-        //
-        //if (availableRooms.size() == 0) {
-        //    throw new NoRoomFoundException("No room within the time period is found");
-        //}
         return availableRooms;
     }
 

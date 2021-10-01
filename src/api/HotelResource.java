@@ -47,11 +47,7 @@ public class HotelResource {
     }
 
     public IRoom getRoom(String roomNumber) {
-        try {
-            return reservationService.getARoom(roomNumber);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        return reservationService.getARoom(roomNumber);
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) throws NoRoomFoundException, InvalidDateException {
@@ -85,6 +81,9 @@ public class HotelResource {
 
     public void displayRooms(Collection<IRoom> rooms) {
         for (IRoom room : rooms) {
+            if (room.getAvailableDates() != null) {
+                System.out.println("Date: " + room.getAvailableDates()[0] + " ~ " + room.getAvailableDates()[1]);
+            }
             System.out.println(room);
         }
     }
