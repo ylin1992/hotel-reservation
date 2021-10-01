@@ -1,10 +1,13 @@
 package model;
 
+import java.util.Date;
+
 public class Room implements IRoom {
 
     private final String roomNumber;
     private final Double price;
     private final RoomType enumeration;
+    private Date[] availableDates;
 
     public Room(String roomNumber, Double price, RoomType type) {
         this.roomNumber = roomNumber;
@@ -30,10 +33,11 @@ public class Room implements IRoom {
 
     @Override
     public String toString() {
-        String out = "\n==================\n";
+        String out = "==================\n";
         out += "Room number: " + roomNumber + "\n";
         out += "Price: " + (isFree() ? "Free\n" : "$" + price.toString() + " per night\n");
         out += "Room type: " + enumeration.toString() + "\n";
+        out += availableDates == null ? "" : "Available dates:" + availableDates[0] + " ~ " + availableDates[1] + "\n";
         out += "==================";
         return out;
     }
@@ -56,4 +60,13 @@ public class Room implements IRoom {
         return room.getRoomNumber().equals(this.roomNumber);
     }
 
+    @Override
+    public Date[] getAvailableDates() {
+        return availableDates;
+    }
+
+    @Override
+    public void setAvailableDates(Date[] dates) {
+        availableDates = dates;
+    }
 }

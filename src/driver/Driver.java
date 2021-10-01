@@ -5,6 +5,7 @@ import api.HotelResource;
 import model.*;
 import service.CustomerService;
 import service.ReservationService;
+import utils.DateHelper;
 
 import java.util.*;
 
@@ -225,6 +226,21 @@ public class Driver {
             System.out.println(hotelResource.getRoom("101"));
             System.out.println(hotelResource.getRoom("201"));
             System.out.println();
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
+
+    }
+
+    public static void testFindRooms() {
+        ReservationService reservationService = ReservationService.getInstance();
+        HotelResource hotelResource = HotelResource.getInstance();
+        try {
+            Date checkIn = DateHelper.getDateFromInt(2021, 11, 11);
+            Date checkOut = DateHelper.getDateFromInt(2021, 11, 16);
+            Collection<IRoom> rooms = reservationService.findRooms(checkIn, checkOut);
+            System.out.println("Retrieved: ");
+            hotelResource.displayRooms(rooms);
         } catch (Exception ex) {
             System.out.println(ex.getLocalizedMessage());
         }

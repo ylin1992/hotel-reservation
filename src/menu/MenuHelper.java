@@ -7,6 +7,7 @@ import model.RoomType;
 import utils.DateHelper;
 import utils.FormatHelper;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -53,16 +54,24 @@ public class MenuHelper extends Menu {
         }
     }
 
-    public static Reservation askReservation(Date checkInDate, Date checkOutDate, String email) {
+    public static Reservation askReservation(Date checkInDate, Date checkOutDate, String email, Collection<IRoom> rooms) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println("Enter a room number: (enter exit to quit)");
+
             String inputRoomNumber = scanner.next();
             if (inputRoomNumber.equals("exit")) {
                 return null;
             }
+
             try {
                 IRoom room = hotelResource.getRoom(inputRoomNumber);
+                Date[] recommendedDates = room.getAvailableDates();
+                if (room != null && recommendedDates[0].compareTo(checkInDate) != 0) {
+                    System.out.println("Applying recommended date...");
+                    checkInDate = recommendedDates[0];
+                    checkOutDate = recommendedDates[1];
+                }
                 return hotelResource.bookARoom(email, room, checkInDate, checkOutDate);
             } catch (Exception ex) {
                 System.out.println(ex.getLocalizedMessage());
@@ -154,6 +163,24 @@ public class MenuHelper extends Menu {
         }
     }
 
+    public static Date[] askDates() {
+        Collection<IRoom> rooms;
+        Date checkInDate;
+        Date checkOutDate;
+
+        while (true) {
+            checkInDate = MenuHelper.askDate("When do you want to check in? (yyyy/mm/dd)");
+            if (checkInDate == null) return null;
+            checkOutDate = MenuHelper.askDate("When do you want to check out? (yyyy/mm/dd)");
+            if (checkOutDate == null) return null;
+            if (checkInDate.compareTo(checkOutDate) >= 0) {
+                System.out.println("Check in date is later than or identical to check in date, try again");
+            } else {
+                return new Date[]{checkInDate, checkOutDate};
+            }
+        }
+    }
+
     public static double askPrice() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -183,4 +210,5 @@ public class MenuHelper extends Menu {
             }
         }
     }
+
 }

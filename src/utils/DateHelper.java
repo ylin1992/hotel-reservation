@@ -43,4 +43,10 @@ public class DateHelper {
             throw new InvalidDateFormatException("Please enter a valid date.");
         }
     }
+
+    public static Date getDateFromInt(int y, int m, int d) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(y, m, d);
+        return calendar.getTime();
+    }
 }

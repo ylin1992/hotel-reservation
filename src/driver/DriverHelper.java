@@ -1,11 +1,9 @@
 package driver;
 
-import model.FreeRoom;
-import model.IRoom;
-import model.Room;
-import model.RoomType;
+import model.*;
 import service.CustomerService;
 import service.ReservationService;
+import utils.DateHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +25,7 @@ public class DriverHelper {
 
     public static ReservationService initializeReservationService() {
         ReservationService reservationService = ReservationService.getInstance();
+        CustomerService customerService = CustomerService.getInstance();
         //ReservationService reservationService = new ReservationService();
         reservationService.addRoom(new FreeRoom("101", RoomType.SINGLE));
         //reservationService.addRoom(new FreeRoom("102", RoomType.DOUBLE));
@@ -37,6 +36,17 @@ public class DriverHelper {
         //reservationService.addRoom(new Room("107", 20.8, RoomType.SINGLE));
         //reservationService.addRoom(new Room("108", 30.8, RoomType.DOUBLE));
         //reservationService.addRoom(new Room("109", 40.8, RoomType.DOUBLE));
+
+        // add some reservation
+        IRoom room = reservationService.getARoom("101");
+        Date checkIn = DateHelper.getDateFromInt(2021, 11, 11);
+        Date checkOut = DateHelper.getDateFromInt(2021, 11, 17);
+        Customer customer = customerService.getCustomer("leo@gmail.com");
+        try {
+            reservationService.reserveARoom(customer, room, checkIn, checkOut);
+        } catch (Exception ex) {
+            System.out.println(ex.getLocalizedMessage());
+        }
         return reservationService;
     }
 

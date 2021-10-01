@@ -3,7 +3,6 @@ package menu;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
-import utils.DateHelper;
 import utils.FormatHelper;
 
 import java.util.Collection;
@@ -52,41 +51,24 @@ public class MainMenu extends Menu implements IMenu {
         Collection<IRoom> rooms;
         Date checkInDate;
         Date checkOutDate;
+        // find a room
         while (true) {
-            checkInDate = MenuHelper.askDate("When do you want to check in? (yyyy/mm/dd)");
-            if (checkInDate == null) return;
-            checkOutDate = MenuHelper.askDate("When do you want to check out? (yyyy/mm/dd)");
-            if (checkOutDate == null) return;
-            if (checkInDate.compareTo(checkOutDate) >= 0) {
-                System.out.println("Check in date is later than or identical to check in date, try again");
-                continue;
-            }
+            Date[] dates = MenuHelper.askDates();
+            if (dates == null) return;
+            checkInDate = dates[0];
+            checkOutDate = dates[1];
             rooms = hotelResource.findARoom(checkInDate, checkOutDate);
-            if (rooms == null) {
-                System.out.println("No room is available, looking for next week...");
-                rooms = hotelResource.findARoom(DateHelper.addDate(checkInDate, 7), DateHelper.addDate(checkOutDate, 7));
-                if (rooms == null) {
-                    boolean isAgain = MenuHelper.askYesOrNo("Do you want to search again?");
-                    if (!isAgain) {
-                        return;
-                    }
-                } else {
-                    System.out.println("We got some rooms available next week: ");
-                    hotelResource.displayRooms(rooms);
-                    boolean isAgain = MenuHelper.askYesOrNo("Do you want to search for next week ? (y/n)");
-                    if (!isAgain) {
-                        return;
-                    }
-                }
-            } else {
+            System.out.println("Your recommended rooms and available dates are listed as follows: ");
+            hotelResource.displayRooms(rooms);
+            System.out.println("Do you want us to automatically apply your travel dates as the recommended dates?");
+            boolean yesOrNo = MenuHelper.askYesOrNo("press n to search again, press y to apply dates automatically after selecting room");
+            if (yesOrNo) {
                 break;
             }
         }
 
-        System.out.println("Available rooms: ");
-        hotelResource.displayRooms(rooms);
 
-        Reservation reservation = MenuHelper.askReservation(checkInDate, checkOutDate, customer.getEmail());
+        Reservation reservation = MenuHelper.askReservation(checkInDate, checkOutDate, customer.getEmail(), rooms);
         if (reservation == null) return; // user quits the program
         System.out.println("Success, your reservation info is listed as follows");
         System.out.println(reservation);

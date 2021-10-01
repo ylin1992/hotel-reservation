@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 public interface IRoom {
     public String getRoomNumber();
 
@@ -8,4 +10,8 @@ public interface IRoom {
     public RoomType getRoomType();
 
     public boolean isFree();
+
+    public Date[] getAvailableDates();
+
+    public void setAvailableDates(Date[] dates);
 }
