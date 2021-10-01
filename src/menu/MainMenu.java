@@ -43,6 +43,12 @@ public class MainMenu extends Menu implements IMenu {
     }
 
     private void reserveARoom() {
+        // check if room is empty
+        if (hotelResource.isRoomEmty()) {
+            System.out.println("No room has been created, returning to main menu...");
+            return;
+        }
+
         // user log in
         Customer customer = MenuHelper.askEmail();
         if (customer == null) return;
@@ -60,6 +66,7 @@ public class MainMenu extends Menu implements IMenu {
             checkInDate = dates[0];
             checkOutDate = dates[1];
             rooms = hotelResource.findARoom(checkInDate, checkOutDate);
+
             System.out.println("Your recommended rooms and available dates are listed as follows: ");
             hotelResource.displayRooms(rooms);
 

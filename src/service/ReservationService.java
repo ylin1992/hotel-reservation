@@ -84,8 +84,14 @@ public class ReservationService {
         }
     }
 
+    /**
+     * @return an empty map if roomTable is empty
+     */
     private HashMap<IRoom, Date[]> findRoomsHelper(Date checkInDate, Date checkOutDate) {
         HashMap<IRoom, Date[]> map = new HashMap<>();
+        if (roomTable.isEmpty()) {
+            return map;
+        }
         int offset = 0;
         while (map.size() == 0) {
             for (IRoom room : roomTable.keySet()) {

@@ -95,4 +95,8 @@ public class HotelResource {
             }
         }
     }
+
+    public boolean isRoomEmty() {
+        return reservationService.getAllRooms().isEmpty();
+    }
 }
